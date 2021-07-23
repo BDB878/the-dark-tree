@@ -243,6 +243,10 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
         `)
     if (mySprite.overlapsWith(myEnemy)) {
         myEnemy.destroy()
+    } else if (i_didnt) {
+        if (mySprite.overlapsWith(skeleton_king)) {
+            skeleton_king.destroy()
+        }
     }
 })
 controller.down.onEvent(ControllerButtonEvent.Released, function () {
@@ -415,12 +419,10 @@ controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
         . . . . f f f . . . . . . . . . 
         `)
 })
-sprites.onOverlap(SpriteKind.Projectile, SpriteKind.bossproject, function (sprite, otherSprite) {
-    skeleton_king.destroy()
-    projectile.destroy()
-})
 sprites.onDestroyed(SpriteKind.bossproject, function (sprite) {
+    music.magicWand.play()
     skeleton_king.startEffect(effects.disintegrate)
+    game.splash("The skeleton king was stopped and the kingdom saved.")
     game.over(true)
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.forest, function (sprite, otherSprite) {
@@ -466,7 +468,8 @@ info.onLifeZero(function () {
     game.over(false)
 })
 sprites.onDestroyed(SpriteKind.Enemy, function (sprite) {
-    sprite.startEffect(effects.disintegrate)
+    music.magicWand.play()
+    myEnemy.startEffect(effects.disintegrate)
 })
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, otherSprite) {
     myEnemy.destroy()
@@ -478,6 +481,7 @@ scene.onOverlapTile(SpriteKind.Player, sprites.dungeon.stairSouth, function (spr
     skeleton_king = sprites.create(assets.image`skeleton king`, SpriteKind.bossproject)
     skeleton_king.setPosition(74, 49)
     skeleton_king.startEffect(effects.blizzard)
+    did_i_spawn_him()
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
     pause(1000)
@@ -512,7 +516,7 @@ projectile2 = sprites.create(img`
     `, SpriteKind.Projectile)
 projectile2.setPosition(-1, -4)
 did_i_spawn_him()
-game.splash("The Dark Tree")
+game.splash("The Dark King")
 music.spooky.play()
 scene.setBackgroundImage(img`
     9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999966666699969999999999999999999999999999999999999999999999999999
